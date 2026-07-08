@@ -1,0 +1,27 @@
+@startuml HRS_ReservationStateDiagram
+' 予約 (Reservation) の状態遷移図
+' 演習6「顧客が予約をキャンセルする」拡張を含む（<<演習6>> が追加分）
+skinparam shadowing false
+skinparam state {
+  BackgroundColor #FEFCE8
+  BorderColor #555555
+  ArrowColor #555555
+}
+title 予約の状態遷移図（演習6 キャンセル拡張を含む）
+
+[*] --> 予約中 : 予約する()
+
+予約中 --> 宿泊中 : チェックイン\n[ 状態を「宿泊中」にする ]
+予約中 --> キャンセル : キャンセルする() <<演習6>>\n[ 状態を「キャンセル」にする ]
+
+宿泊中 --> [*] : チェックアウト（精算）
+キャンセル --> [*]
+
+note top of キャンセル
+  <<演習6 保守で追加>>
+  ・キャンセルできるのは「予約中」のときのみ
+  ・キャンセル時に確保していた部屋を空室に戻す
+  ・宿泊中（チェックイン済み）・キャンセル済みからは不可
+end note
+
+@enduml

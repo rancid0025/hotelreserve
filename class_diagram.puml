@@ -1,0 +1,76 @@
+@startuml HRS_ClassDiagram
+' ホテル予約システム (HRS) クラス図
+' 演習6「顧客が予約をキャンセルする」拡張を含む（<<演習6>> が追加分）
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam linetype ortho
+skinparam class {
+  BackgroundColor #FEFCE8
+  BorderColor #555555
+  ArrowColor #555555
+}
+title ホテル予約システム クラス図（演習6 予約キャンセル拡張を含む）
+
+class 利用者 {
+  - 利用者名 : string
+}
+
+class 予約 {
+  - 予約番号 : int
+  - チェックイン日 : datetime
+  - 状態 : string
+  --
+  + 状態を「宿泊中」にする()
+  + 状態を「キャンセル」にする() <<演習6>>
+}
+
+class 部屋 {
+  - 部屋番号 : int
+  - 基本宿泊料 : int
+  --
+  + 空室を使用中にする()
+  + 部屋を空室にする()
+}
+
+class シングル
+class ダブル
+class スイート
+
+class 宿泊 {
+  - イン日時 : datetime
+  - アウト日時 : datetime
+  --
+  + アウト日時を記録する()
+}
+
+class 支払い {
+  - 支払い料金 : int
+  --
+  + 支払い記録を生成する()
+}
+
+class ホテル受付係 {
+  - 名前 : string
+}
+
+' --- 関連（関連名 + 多重度） ---
+利用者     "1" -- "*"    予約 : 予約する >
+予約       "*" -- "1"    部屋 : 対象 >
+部屋       "1" -- "*"    宿泊 : 記録 >
+予約       "1" -- "0..1" 宿泊 : 生成 >
+ホテル受付係 "1" -- "*"   宿泊 : 対応 >
+宿泊       "1" -- "0..1" 支払い : 精算 >
+
+' --- 汎化（部屋タイプ） ---
+部屋 <|-- シングル
+部屋 <|-- ダブル
+部屋 <|-- スイート
+
+note right of 予約
+  <<演習6 保守で追加>>
+  状態: 予約中 / 宿泊中 / キャンセル
+  「キャンセル」状態と
+  「状態を『キャンセル』にする()」を追加
+end note
+
+@enduml

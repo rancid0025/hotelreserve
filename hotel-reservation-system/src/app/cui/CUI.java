@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.util.Date;
 
 import app.AppException;
+import app.cancel.CancelReservationForm;
 import app.checkin.CheckInRoomForm;
 import app.checkout.CheckOutRoomForm;
 import app.management.RoomManagementForm;
@@ -39,6 +40,7 @@ public class CUI {
 				System.out.println("3: チェックイン");
 				System.out.println("4: チェックアウト");
 				System.out.println("5: 部屋管理");
+				System.out.println("6: 予約キャンセル");
 				System.out.println("9: 終了");
 				System.out.print("> ");
 
@@ -70,8 +72,11 @@ public class CUI {
 						case 5:
 							manageRoom();
 							break;
+						case 6:
+							cancelReservation();
+							break;
 						default:
-							System.out.println("1〜5または9を入力してください。");
+							System.out.println("1〜6または9を入力してください。");
 							break;
 					}
 				}
@@ -178,6 +183,25 @@ public class CUI {
 		form.inputRoomNumber(roomNumber); // 部屋番号を入力する
 		form.displayStayInfo();
 		form.confirmPayment(); // 支払いを確定する
+	}
+
+	/** 予約キャンセル (予約キャンセル画面) — 演習6: 保守で追加 */
+	private void cancelReservation() throws IOException, AppException {
+		System.out.println("キャンセルする予約番号を入力してください");
+		System.out.print("> ");
+		int reservationNumber;
+		try {
+			reservationNumber = Integer.parseInt(reader.readLine());
+		}
+		catch (NumberFormatException e) {
+			System.out.println("予約番号が不正です。");
+			return;
+		}
+
+		CancelReservationForm form = new CancelReservationForm();
+		form.inputReservationNumber(reservationNumber); // 予約番号を入力する
+		form.displayReservationInfo(); // 予約情報を表示する
+		form.confirmCancel(); // キャンセルを確定する
 	}
 
 	/** 部屋管理 (部屋管理画面) */

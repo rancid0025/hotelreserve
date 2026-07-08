@@ -69,6 +69,30 @@ public class ReservationManager {
 		getReservationDao().updateReservation(reservation);
 	}
 
+	/**
+	 * +予約をキャンセルする() (演習6: 保守で追加)<br>
+	 * 予約の状態を「キャンセル」へ変更する。<br>
+	 * 既に宿泊中(チェックイン済み)、またはキャンセル済みの予約はキャンセルできない。
+	 */
+	public Reservation cancelReservation(int reservationNumber) throws ReservationException {
+		Reservation reservation = getReservationDetail(reservationNumber);
+		// 既にチェックイン済みの予約はキャンセル不可
+		if (Reservation.STATUS_STAYING.equals(reservation.getStatus())) {
+			ReservationException exception = new ReservationException("チェックイン済みの予約はキャンセルできません");
+			exception.getDetailMessages().add("予約番号[" + reservationNumber + "]");
+			throw exception;
+		}
+		// 既にキャンセル済みの予約は再キャンセル不可
+		if (Reservation.STATUS_CANCELLED.equals(reservation.getStatus())) {
+			ReservationException exception = new ReservationException("既にキャンセル済みの予約です");
+			exception.getDetailMessages().add("予約番号[" + reservationNumber + "]");
+			throw exception;
+		}
+		reservation.changeStatusToCancelled();
+		getReservationDao().updateReservation(reservation);
+		return reservation;
+	}
+
 	private ReservationDao getReservationDao() {
 		return DaoFactory.getInstance().getReservationDao();
 	}

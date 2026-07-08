@@ -14,6 +14,9 @@ public class Reservation {
 	/** 状態: 宿泊中 */
 	public static final String STATUS_STAYING = "宿泊中";
 
+	/** 状態: キャンセル (演習6: 保守で追加) */
+	public static final String STATUS_CANCELLED = "キャンセル";
+
 	/** -予約番号: int */
 	private int reservationNumber;
 
@@ -32,6 +35,11 @@ public class Reservation {
 	/** +状態を「宿泊中」にする() */
 	public void changeStatusToStaying() {
 		this.status = STATUS_STAYING;
+	}
+
+	/** +状態を「キャンセル」にする() (演習6: 保守で追加) */
+	public void changeStatusToCancelled() {
+		this.status = STATUS_CANCELLED;
 	}
 
 	public int getReservationNumber() {

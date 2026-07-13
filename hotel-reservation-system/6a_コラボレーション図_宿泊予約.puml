@@ -1,22 +1,21 @@
 @startuml HRS_コラボレーション図_宿泊予約
-' システム分析後のコラボレーション（コミュニケーション）図：宿泊予約
-' ※ PlantUMLはコミュニケーション図を独自表記で持たないため、
-'   オブジェクト＋番号付きメッセージで表現している。
+
 left to right direction
 skinparam shadowing false
 title コラボレーション図：部屋を予約する
 
 actor "利用者" as U
-object ":宿泊予約画面" as B <<boundary>>
-object ":宿泊予約処理" as C <<control>>
-object ":予約" as R <<entity>>
-object ":部屋" as RM <<entity>>
+boundary "宿泊予約画面" as B
+control "宿泊予約処理" as C
+entity "予約" as R
+entity "部屋" as RM
 
-U  --> B  : 1: 予約情報を入力する(利用者名, 部屋タイプ, 宿泊予定日)
+U  --> B  : 1: 予約情報を入力する\n(利用者名, 部屋タイプ, 宿泊予定日)
 B  --> C  : 2: 部屋を予約する()
-C  --> RM : 3: [空室数>0]部屋を取得する()
+C  --> RM : 3: [空室数 > 0]\n部屋を取得する()
 RM --> RM : 4: 空室数を1減らす()
 C  --> R  : 5: 予約を作成する()
 R  --> R  : 6: 予約番号を発行する()
 B  --> U  : 7: 予約番号を表示する()
+
 @enduml

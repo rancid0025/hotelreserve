@@ -1,15 +1,16 @@
 @startuml HRS_コラボレーション図_チェックイン
-' システム分析後のコラボレーション図：チェックイン
+
 left to right direction
 skinparam shadowing false
 title コラボレーション図：チェックインする
 
 actor "ホテル受付係" as A
-object ":チェックイン画面" as B <<boundary>>
-object ":チェックイン制御" as C <<control>>
-object ":予約" as R <<entity>>
-object ":部屋" as RM <<entity>>
-object ":宿泊" as S <<entity>>
+
+boundary "チェックイン画面" as B
+control "チェックイン制御" as C
+entity "予約" as R
+entity "部屋" as RM
+entity "宿泊" as S
 
 A --> B : 1: 予約番号を入力する(予約番号)
 B --> C : 2: 予約を検索する(予約番号)
@@ -19,4 +20,5 @@ B --> C : 5: チェックイン完了を指示する(部屋番号)
 C --> R : 6: 状態を「宿泊中」にする()
 C --> RM : 7: 部屋を使用中にする()
 C --> S : 8: 宿泊記録を生成する()
+
 @enduml

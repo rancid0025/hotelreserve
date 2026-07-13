@@ -1,0 +1,23 @@
+@startuml HRS_コラボレーション図_チェックアウト
+' システム分析後のコラボレーション図：チェックアウト
+left to right direction
+skinparam shadowing false
+title コラボレーション図：チェックアウトする
+
+actor "ホテル受付係" as A
+object ":チェックアウト画面" as B <<boundary>>
+object ":チェックアウト制御" as C <<control>>
+object ":宿泊" as S <<entity>>
+object ":部屋" as RM <<entity>>
+object ":支払い" as P <<entity>>
+
+A --> B : 1: 部屋番号を入力する(部屋番号)
+B --> C : 2: 宿泊データを検索する(部屋番号)
+C --> S : 3: 滞在詳細を取得する()
+A --> B : 4: 支払いを確定する()
+B --> C : 5: チェックアウトを完了する()
+C --> S : 6: アウト日時を記録する(現在日時)
+C --> RM : 7: 基本宿泊料を取得する()
+C --> P : 8: 支払い記録を生成する(支払い料金)
+C --> RM : 9: 部屋を空室にする()
+@enduml

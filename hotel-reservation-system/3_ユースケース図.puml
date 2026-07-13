@@ -1,0 +1,35 @@
+@startuml HRS_ユースケース図
+' ホテル予約システム ユースケース図 最新版
+left to right direction
+skinparam packageStyle rectangle
+skinparam shadowing false
+title ユースケース図
+
+actor "利用者" as U
+actor "ホテル受付係" as R
+actor "管理者" as A
+
+rectangle "ホテル予約システム" {
+  usecase "空室を検索する" as UC1
+  usecase "部屋を予約する" as UC2
+  usecase "予約をキャンセルする" as UC6
+  usecase "チェックインする" as UC3
+  usecase "チェックアウトする" as UC4
+  usecase "部屋を管理する" as UC5
+}
+
+U -- UC1
+U -- UC2
+U -- UC6
+R -- UC3
+R -- UC4
+A -- UC5
+
+' 利用者は受付係を介して手続きに参加する
+U -- UC3
+U -- UC4
+
+UC2 ..> UC1 : <<include>>
+
+note bottom of UC6 : ★演習6（保守）で追加
+@enduml

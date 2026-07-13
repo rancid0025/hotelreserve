@@ -1,0 +1,58 @@
+@startuml HRS_分析クラス図
+' ホテル予約システム 分析クラス図（ドメインモデル）最新版
+' ★演習6 = 予約キャンセル拡張で追加した要素
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam linetype ortho
+title 分析クラス図（ドメインモデル）
+
+class 利用者 {
+  - 利用者名 : string
+}
+
+class 予約 {
+  - 予約番号 : int
+  - チェックイン日 : datetime
+  - 状態 : string
+  --
+  + 状態を「宿泊中」にする()
+  + 状態を「キャンセル」にする()
+}
+note right of 予約
+  状態 = 予約中 / 宿泊中 / キャンセル
+  「キャンセル」は ★演習6 で追加
+end note
+
+class 部屋 {
+  - 部屋番号 : int
+  - 基本宿泊料 : int
+}
+
+class シングル
+class ダブル
+class スイート
+
+class 宿泊 {
+  - イン日時 : datetime
+  - アウト日時 : datetime
+}
+
+class 支払い {
+  - 支払い料金 : int
+}
+
+class ホテル受付係 {
+  - 名前 : string
+}
+
+利用者      "1" -- "*"    予約 : 予約する >
+予約        "*" -- "1"    部屋 : 対象 >
+予約        "1" -- "0..1" 宿泊 : 生成 >
+部屋        "1" -- "*"    宿泊 : 記録 >
+ホテル受付係 "1" -- "*"    宿泊 : 対応 >
+宿泊        "1" -- "0..1" 支払い : 精算 >
+
+部屋 <|-- シングル
+部屋 <|-- ダブル
+部屋 <|-- スイート
+@enduml

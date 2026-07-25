@@ -65,6 +65,12 @@ public class ReservationManager {
 			exception.getDetailMessages().add("予約番号[" + reservationNumber + "]");
 			throw exception;
 		}
+		// キャンセル済みの予約はチェックインできない
+		if (Reservation.STATUS_CANCELLED.equals(reservation.getStatus())) {
+			ReservationException exception = new ReservationException("キャンセル済みの予約はチェックインできません");
+			exception.getDetailMessages().add("予約番号[" + reservationNumber + "]");
+			throw exception;
+		}
 		reservation.changeStatusToStaying();
 		getReservationDao().updateReservation(reservation);
 	}

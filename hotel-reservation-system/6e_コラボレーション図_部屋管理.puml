@@ -1,0 +1,23 @@
+@startuml HRS_コラボレーション図_部屋管理
+
+left to right direction
+skinparam shadowing false
+title コラボレーション図：部屋を管理する（部屋の登録・一覧）
+
+actor "管理者" as A
+boundary "部屋管理画面" as B
+control "部屋管理処理" as C
+entity "部屋" as RM
+
+A  --> B  : 1: 部屋情報を入力する\n(部屋番号, 部屋タイプ, 基本宿泊料)
+B  --> C  : 2: 部屋を追加する()
+C  --> RM : 3: 部屋を作成し保存する()
+A  --> B  : 4: 全部屋の表示を指示する
+B  --> C  : 5: 全部屋を取得する()
+C  --> RM : 6: 部屋一覧を取得する()
+B  --> A  : 7: 全部屋を表示する()
+
+' 代替系列
+' 3a: [部屋番号が重複] 警告を表示して終了
+
+@enduml

@@ -1,0 +1,20 @@
+@startuml HRS_コラボレーション図_空室検索
+
+left to right direction
+skinparam shadowing false
+title コラボレーション図：空室を検索する
+
+actor "利用者" as U
+boundary "宿泊部屋検索画面" as B
+control "宿泊部屋検索処理" as C
+entity "部屋" as RM
+
+U  --> B  : 1: 部屋検索条件を入力する(部屋タイプ)
+B  --> C  : 2: 部屋を検索する()
+C  --> RM : 3: [空室数>0] 部屋を検索する()
+C  --> C  : 4: 空室一覧を作成する()
+B  --> U  : 5: 空室一覧を表示する()
+' 代替系列
+' 5a: [空室なし] 警告を表示する()
+
+@enduml

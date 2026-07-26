@@ -1,0 +1,65 @@
+@startuml HRS_アーキテクチャ図_BCEレイヤ
+' ホテル予約システム アーキテクチャ設計（BCE＋レイヤ構成）パッケージ図
+' 演習6 = 予約キャンセル拡張で追加した要素
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam classBackgroundColor #FDFDFD
+title アーキテクチャ設計（BCE＋レイヤ構成）
+
+package "Boundary（画面・UI）  app.*.＊Form / app.cui.CUI" #EDF3FE {
+  class "宿泊部屋検索画面\nRoomSearchForm" as B_search
+  class "宿泊予約画面\nReserveRoomForm" as B_reserve
+  class "チェックイン画面\nCheckInRoomForm" as B_checkin
+  class "チェックアウト画面\nCheckOutRoomForm" as B_checkout
+  class "部屋管理画面\nRoomManagementForm" as B_manage
+  class "予約キャンセル画面\nCancelReservationForm «演習6»" as B_cancel #FFF3D6
+}
+
+package "Control（処理・コントローラ）  app.*.＊Control" #EAF7EA {
+  class "宿泊部屋検索処理\nRoomSearchControl" as C_search
+  class "宿泊予約処理\nReserveRoomControl" as C_reserve
+  class "チェックイン制御\nCheckInRoomControl" as C_checkin
+  class "チェックアウト制御\nCheckOutRoomControl" as C_checkout
+  class "部屋管理処理\nRoomManagementControl" as C_manage
+  class "予約キャンセル制御\nCancelReservationControl «演習6»" as C_cancel #FFF3D6
+}
+
+package "Entity（ドメイン・データ）  domain.*  Manager＋DAO" #FDF0EE {
+  class "予約\nReservation / ReservationManager\nReservationDao / ReservationMemoryDao" as E_reserve
+  class "部屋\nRoom / RoomManager\nRoomDao / RoomMemoryDao" as E_room
+  class "宿泊\nStay / StayManager\nStayDao / StayMemoryDao" as E_stay
+  class "支払い\nPayment / PaymentManager\nPaymentDao / PaymentMemoryDao" as E_pay
+  class "利用者 User\n受付係 Receptionist" as E_user
+  class "DaoFactory / ManagerFactory\n（生成の一元化）" as Factory #F3E8FD
+}
+
+' --- Boundary → Control（依存） ---
+B_search  ..> C_search
+B_reserve ..> C_reserve
+B_checkin ..> C_checkin
+B_checkout ..> C_checkout
+B_manage  ..> C_manage
+B_cancel  ..> C_cancel
+
+' --- Control → Entity（依存） ---
+C_search   ..> E_room
+C_reserve  ..> E_reserve
+C_reserve  ..> E_room
+C_checkin  ..> E_reserve
+C_checkin  ..> E_room
+C_checkin  ..> E_stay
+C_checkout ..> E_stay
+C_checkout ..> E_room
+C_checkout ..> E_pay
+C_manage   ..> E_room
+C_cancel   ..> E_reserve
+C_cancel   ..> E_room
+
+note bottom of Factory
+  Control は DaoFactory / ManagerFactory 経由で
+  Entity（DAO・Manager）を取得する。
+  メモリ実装→DB実装の差し替えは Factory の変更のみで可能。
+end note
+
+@enduml
